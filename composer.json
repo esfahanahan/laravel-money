@@ -1,0 +1,21 @@
+{
+    "name": "esfahanahan/laravel-money",
+    "description": "Work with money in better way!",
+    "type": "library",
+    "require": {
+        "brick/money": "0.10.2",
+        "illuminate/database": "^11.0|^12.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "dev-master",
+        "phpstan/phpstan": "2.1.x-dev",
+        "fakerphp/faker": "2.0.x-dev"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "EsfahanAhan\\Money\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
