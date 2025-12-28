@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EsfahanAhan\Money\Enums;
 
-enum CurrencyPositionEnum: string
+enum CurrencyPosition: string
 {
     /**
      * Left.
@@ -27,12 +27,17 @@ enum CurrencyPositionEnum: string
     case RIGHT_WITH_SPACE = 'right-with-space';
 
     /**
+     * Do not show the currency symbol.
+     */
+    case HIDDEN = 'hidden';
+
+    /**
      * @return array<value-of<self>,string>
      */
     public static function options(): array
     {
         $options = [];
-        foreach (CurrencyPositionEnum::cases() as $case) {
+        foreach (CurrencyPosition::cases() as $case) {
             $options[$case->value] = static::translate($case);
         }
 

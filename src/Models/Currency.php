@@ -7,19 +7,19 @@ namespace EsfahanAhan\Money\Models;
 use Brick\Math\BigNumber;
 use EsfahanAhan\Money\Contracts\ICurrency;
 use EsfahanAhan\Money\Database\Factories\CurrencyFactory;
-use EsfahanAhan\Money\Enums\CurrencyPositionEnum;
+use EsfahanAhan\Money\Enums\CurrencyPosition;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property int                  $id
- * @property non-empty-string     $code              The code of the currency, e.g., `USD`, `EUR`, `IRR`.
- * @property string               $name              The name of the currency, e.g., `US Dollar`, `Euro`, `Iranian Rial`.
- * @property string               $symbol            The symbol of the currency, e.g., `$`, `€`, `﷼`.
- * @property non-negative-int     $decimal           The number of decimal places used by the currency.
- * @property non-empty-string     $group_separator   The group separator used by the currency, e.g., `,`, `.`.
- * @property non-empty-string     $decimal_separator The decimal separator used by the currency, e.g., `.`, `,`.
- * @property CurrencyPositionEnum $currency_position The position of the currency symbol relative to the amount, e.g., `left`, `right`, `left-with-space`, `right-with-space`.
+ * @property int              $id
+ * @property non-empty-string $code              The code of the currency, e.g., `USD`, `EUR`, `IRR`.
+ * @property string           $name              The name of the currency, e.g., `US Dollar`, `Euro`, `Iranian Rial`.
+ * @property string           $symbol            The symbol of the currency, e.g., `$`, `€`, `﷼`.
+ * @property non-negative-int $decimal           The number of decimal places used by the currency.
+ * @property non-empty-string $group_separator   The group separator used by the currency, e.g., `,`, `.`.
+ * @property non-empty-string $decimal_separator The decimal separator used by the currency, e.g., `.`, `,`.
+ * @property CurrencyPosition $currency_position The position of the currency symbol relative to the amount, e.g., `left`, `right`, `left-with-space`, `right-with-space` or `hidden`.
  */
 class Currency extends Model implements ICurrency
 {
@@ -49,7 +49,7 @@ class Currency extends Model implements ICurrency
      * @var array<string,class-string>
      */
     protected $casts = [
-        'currency_position' => CurrencyPositionEnum::class,
+        'currency_position' => CurrencyPosition::class,
     ];
 
     /**
@@ -107,10 +107,11 @@ class Currency extends Model implements ICurrency
         );
 
         return match ($this->currency_position) {
-            CurrencyPositionEnum::LEFT => "{$this->symbol}{$formattedAmount}",
-            CurrencyPositionEnum::LEFT_WITH_SPACE => "{$this->symbol} {$formattedAmount}",
-            CurrencyPositionEnum::RIGHT => "{$formattedAmount}{$this->symbol}",
-            CurrencyPositionEnum::RIGHT_WITH_SPACE => "{$formattedAmount} {$this->symbol}",
+            CurrencyPosition::HIDDEN => $formattedAmount,
+            CurrencyPosition::LEFT => "{$this->symbol}{$formattedAmount}",
+            CurrencyPosition::LEFT_WITH_SPACE => "{$this->symbol} {$formattedAmount}",
+            CurrencyPosition::RIGHT => "{$formattedAmount}{$this->symbol}",
+            CurrencyPosition::RIGHT_WITH_SPACE => "{$formattedAmount} {$this->symbol}",
         };
     }
 

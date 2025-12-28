@@ -16,5 +16,12 @@
         "psr-4": {
             "EsfahanAhan\\Money\\": "src/"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "EsfahanAhan\\Money\\ServiceProvider"
+            ]
+        }
     }
 }

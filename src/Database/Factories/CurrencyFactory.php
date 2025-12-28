@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EsfahanAhan\Money\Database\Factories;
 
-use EsfahanAhan\Money\Enums\CurrencyPositionEnum;
+use EsfahanAhan\Money\Enums\CurrencyPosition;
 use EsfahanAhan\Money\Models\Currency;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -30,7 +30,7 @@ class CurrencyFactory extends Factory
      *  decimal: int,
      *  group_separator: non-empty-string,
      *  decimal_separator: non-empty-string,
-     *  currency_position: value-of<CurrencyPositionEnum>
+     *  currency_position: value-of<CurrencyPosition>
      * }
      */
     public function definition(): array
@@ -42,7 +42,7 @@ class CurrencyFactory extends Factory
             'decimal' => $this->faker->numberBetween(0, 3),
             'group_separator' => ',',
             'decimal_separator' => '.',
-            'currency_position' => CurrencyPositionEnum::LEFT->value,
+            'currency_position' => CurrencyPosition::LEFT->value,
         ];
     }
 
