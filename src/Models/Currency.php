@@ -106,6 +106,11 @@ class Currency extends Model implements ICurrency
             $this->group_separator
         );
 
+        if ($this->decimal > 0) {
+            $formattedAmount = rtrim($formattedAmount, '0');
+            $formattedAmount = rtrim($formattedAmount, $this->decimal_separator);
+        }
+
         return match ($this->currency_position) {
             CurrencyPosition::HIDDEN => $formattedAmount,
             CurrencyPosition::LEFT => "{$this->symbol}{$formattedAmount}",
