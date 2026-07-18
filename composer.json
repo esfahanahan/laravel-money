@@ -23,5 +23,12 @@
                 "EsfahanAhan\\Money\\ServiceProvider"
             ]
         }
+    },
+    "archive": {
+        "exclude": [
+            "/.gitignore",
+            "/.php-cs-fixer.php",
+            "/.phpstan.dist.neon"
+        ]
     }
 }
