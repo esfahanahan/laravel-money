@@ -23,6 +23,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Currency extends Model implements ICurrency
 {
+    public static bool $useCachedFormats = false;
+
+    /**
+     * @var array<non-empty-string,non-empty-string>
+     */
+    private static array $cachedFormats = [];
+
     /**
      * @use HasFactory<CurrencyFactory>
      */
@@ -97,19 +104,7 @@ class Currency extends Model implements ICurrency
 
     public function format(BigNumber|int|string $amount): string
     {
-        $amount = BigNumber::of($amount);
-
-        $formattedAmount = number_format(
-            $amount->toFloat(),
-            $this->decimal,
-            $this->decimal_separator,
-            $this->group_separator
-        );
-
-        if ($this->decimal > 0) {
-            $formattedAmount = rtrim($formattedAmount, '0');
-            $formattedAmount = rtrim($formattedAmount, $this->decimal_separator);
-        }
+        $formattedAmount = $this->formatAmount($amount);
 
         return match ($this->currency_position) {
             CurrencyPosition::HIDDEN => $formattedAmount,
@@ -124,6 +119,16 @@ class Currency extends Model implements ICurrency
     {
         $amount = BigNumber::of($amount);
 
+        if (static::$useCachedFormats) {
+            $cachedKey = implode(':', [
+                $amount->toString(), $this->decimal, $this->decimal_separator, $this->group_separator,
+            ]);
+
+            if (isset(self::$cachedFormats[$cachedKey])) {
+                return self::$cachedFormats[$cachedKey];
+            }
+        }
+
         $formattedAmount = number_format(
             $amount->toFloat(),
             $this->decimal,
@@ -136,7 +141,9 @@ class Currency extends Model implements ICurrency
             $formattedAmount = rtrim($formattedAmount, $this->decimal_separator);
         }
 
-        return $formattedAmount;
+        return static::$useCachedFormats
+            ? self::$cachedFormats[$cachedKey] = $formattedAmount
+            : $formattedAmount;
     }
 
     public function isSameAs(ICurrency $other): bool
