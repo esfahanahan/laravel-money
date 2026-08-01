@@ -86,6 +86,11 @@ class Money implements \JsonSerializable
         return $this->currency->format($this->amount);
     }
 
+    public function formatAmount(): string
+    {
+        return $this->currency->formatAmount($this->amount);
+    }
+
     /**
      * Adds another Money object of the same currency.
      */
