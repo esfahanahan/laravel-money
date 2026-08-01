@@ -22,7 +22,7 @@ class Money implements \JsonSerializable
         BigNumber|int|float|string $amount,
         ICurrency $currency,
         ?Context $context = null,
-        RoundingMode $roundingMode = RoundingMode::UNNECESSARY,
+        RoundingMode $roundingMode = RoundingMode::Unnecessary,
     ): Money {
         if (null === $context) {
             $context = new DefaultContext();
@@ -41,9 +41,9 @@ class Money implements \JsonSerializable
      * @param Context      $context      the context
      * @param RoundingMode $roundingMode an optional rounding mode if the amount does not fit the context
      *
-     * @throws RoundingNecessaryException if RoundingMode::UNNECESSARY is used but rounding is necessary
+     * @throws RoundingNecessaryException if RoundingMode::Unnecessary is used but rounding is necessary
      */
-    public static function create(BigNumber $amount, ICurrency $currency, Context $context, RoundingMode $roundingMode = RoundingMode::UNNECESSARY): Money
+    public static function create(BigNumber $amount, ICurrency $currency, Context $context, RoundingMode $roundingMode = RoundingMode::Unnecessary): Money
     {
         $amount = $context->applyTo(
             $amount,
@@ -207,7 +207,7 @@ class Money implements \JsonSerializable
      *
      * @phpstan-param RoundingMode::* $mode
      */
-    public function rounded(RoundingMode $mode = RoundingMode::HALF_UP): Money
+    public function rounded(RoundingMode $mode = RoundingMode::HalfUp): Money
     {
         $scale = $this->currency->getDecimal();
         $rounded = BigDecimal::of($this->amount)->toScale($scale, $mode);
