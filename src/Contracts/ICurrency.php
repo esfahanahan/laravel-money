@@ -70,7 +70,12 @@ interface ICurrency
     /**
      * Format the given money according to the currency's rules.
      */
-    public function format(BigNumber|int|float|string $money): string;
+    public function format(BigNumber|int|string $money): string;
+
+    /**
+     * Format the given money according to the currency's rules.
+     */
+    public function formatAmount(BigNumber|int|string $money): string;
 
     public function isSameAs(ICurrency $other): bool;
 }

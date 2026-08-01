@@ -95,7 +95,7 @@ class Currency extends Model implements ICurrency
         return $this->group_separator;
     }
 
-    public function format(BigNumber|int|float|string $amount): string
+    public function format(BigNumber|int|string $amount): string
     {
         $amount = BigNumber::of($amount);
 
@@ -118,6 +118,25 @@ class Currency extends Model implements ICurrency
             CurrencyPosition::RIGHT => "{$formattedAmount}{$this->symbol}",
             CurrencyPosition::RIGHT_WITH_SPACE => "{$formattedAmount} {$this->symbol}",
         };
+    }
+
+    public function formatAmount(BigNumber|int|string $amount): string
+    {
+        $amount = BigNumber::of($amount);
+
+        $formattedAmount = number_format(
+            $amount->toFloat(),
+            $this->decimal,
+            $this->decimal_separator,
+            $this->group_separator
+        );
+
+        if ($this->decimal > 0) {
+            $formattedAmount = rtrim($formattedAmount, '0');
+            $formattedAmount = rtrim($formattedAmount, $this->decimal_separator);
+        }
+
+        return $formattedAmount;
     }
 
     public function isSameAs(ICurrency $other): bool
